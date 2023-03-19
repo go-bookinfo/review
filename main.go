@@ -36,7 +36,7 @@ func main() {
 		Color:    "",
 	}
 	http.HandleFunc("/review", func(w http.ResponseWriter, r *http.Request) {
-		resp, err := http.Get("http://localhost:8000/rating")
+		resp, err := http.Get("http://rating/rating")
 		if err != nil {
 			panic(err)
 		}
