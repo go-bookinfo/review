@@ -1,4 +1,5 @@
 FROM alpine:3.17
-ADD review /app/review
+WORKDIR /app
+ADD review review
 EXPOSE 80
 ENTRYPOINT [ "/app/review" ]
