@@ -64,7 +64,7 @@ func main() {
 		Star:     0,
 		Reviewer: "Reviewer1",
 		Review:   "An extremely entertaining play by Shakespeare. The slapstick humour is refreshing!",
-		Color:    "",
+		Color:    "red",
 	}
 	reviewer2 := reviewes{
 		Id:       2,
