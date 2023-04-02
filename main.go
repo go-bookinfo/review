@@ -71,7 +71,7 @@ func main() {
 		Star:     0,
 		Reviewer: "Reviewer2",
 		Review:   "Absolutely fun and entertaining. The play lacks thematic depth when compared to other plays by Shakespeare.",
-		Color:    "",
+		Color:    "red",
 	}
 	http.HandleFunc("/review", func(w http.ResponseWriter, r *http.Request) {
 		requestID, ctx, _ := Extract(r)
