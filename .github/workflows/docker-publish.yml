@@ -17,7 +17,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository }}-${GITHUB_REF##*/}
 
 
 jobs:
@@ -72,23 +72,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-v1
-          tags: |
-            type=sha
-      - name: Extract Docker metadata
-        if: github.ref == 'refs/heads/v2'
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-v2
-          tags: |
-            type=sha
-      - name: Extract Docker metadata
-        if: github.ref == 'refs/heads/v3'
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-v3
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=sha
 
@@ -120,40 +104,11 @@ jobs:
         run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
 
       - name: helm tag update
-        if: github.ref == 'refs/heads/v1'
         run: |
           apk add yq
           git clone --depth 1 https://gustjd887:${{ secrets.GIT_TOKEN }}@github.com/go-bookinfo/helm.git
           cd helm
-          yq -i e '.v1.image.tag = "'sha-${GITHUB_SHA::7}'"' review/values.yaml
-          
-          git config user.name "GitHub Actions"
-          git config user.email "action@github.com"
-          git add .
-          git commit --allow-empty -m "tag change"
-          git push origin main
-          
-      - name: helm tag update
-        if: github.ref == 'refs/heads/v2'
-        run: |
-          apk add yq
-          git clone --depth 1 https://gustjd887:${{ secrets.GIT_TOKEN }}@github.com/go-bookinfo/helm.git
-          cd helm
-          yq -i e '.v2.image.tag = "'sha-${GITHUB_SHA::7}'"' review/values.yaml
-          
-          git config user.name "GitHub Actions"
-          git config user.email "action@github.com"
-          git add .
-          git commit --allow-empty -m "tag change"
-          git push origin main
-
-      - name: helm tag update
-        if: github.ref == 'refs/heads/v3'
-        run: |
-          apk add yq
-          git clone --depth 1 https://gustjd887:${{ secrets.GIT_TOKEN }}@github.com/go-bookinfo/helm.git
-          cd helm
-          yq -i e '.v3.image.tag = "'sha-${GITHUB_SHA::7}'"' review/values.yaml
+          yq -i e '.${GITHUB_REF##*/}.image.tag = "'sha-${GITHUB_SHA::7}'"' review/values.yaml
           
           git config user.name "GitHub Actions"
           git config user.email "action@github.com"
