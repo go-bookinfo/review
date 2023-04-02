@@ -104,7 +104,7 @@ jobs:
 
       - name: helm tag update
         run: |
-          sudo apt install yq -y
+          sudo snap install yq
           git clone --depth 1 https://gustjd887:${{ secrets.GIT_TOKEN }}@github.com/go-bookinfo/helm.git
           cd helm
           yq -i e '.${{ github.ref_name }}.image.tag = "'sha-${GITHUB_SHA::7}'"' review/values.yaml
