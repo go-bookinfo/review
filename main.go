@@ -64,14 +64,14 @@ func main() {
 		Star:     0,
 		Reviewer: "Reviewer1",
 		Review:   "An extremely entertaining play by Shakespeare. The slapstick humour is refreshing!",
-		Color:    "",
+		Color:    "none",
 	}
 	reviewer2 := reviewes{
 		Id:       2,
 		Star:     0,
 		Reviewer: "Reviewer2",
 		Review:   "Absolutely fun and entertaining. The play lacks thematic depth when compared to other plays by Shakespeare.",
-		Color:    "",
+		Color:    "none",
 	}
 	http.HandleFunc("/review", func(w http.ResponseWriter, r *http.Request) {
 		requestID, ctx, _ := Extract(r)
