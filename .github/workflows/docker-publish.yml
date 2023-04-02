@@ -41,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: go get .
       - name: echo github branch
-        run: echo ${{ github.head_ref }}
+        run: echo ${{ github.ref_name }}
       - name: Go Build
         run: CGO_ENABLED=0 go build
       # Install the cosign tool except on PR
